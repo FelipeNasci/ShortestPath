@@ -5,28 +5,44 @@ import Graph.Vertex;
 
 public class DepthSearch implements Search {
 
+    private VisitList[] list;
+    private Graph graph;
+
     @Override
     public void search(Graph graph) {
 
         //lista de vertices nao visitados
-        VisitList[] list = new VisitList[graph.getLength()];
+        this.list = new VisitList[graph.getLength()];
+        this.graph = graph;
         
         //Insere os vertices do grafo na lista
         //Atribui "nao visitado" para todos os vertices
         init(graph, list);
+        depth(list[0].getVertex());
         
-        
-        showVisited(list);
+        //showVisited(list);
         
     }
 
-    private void depth(VisitList[] list){
+    private void depth( Vertex vertex){
+        
+        System.err.println("Estou no Vertice " + vertex.getId());
+                
         //Marca o primeiro vertice da lista como visitado
         //A busca sera iniciada por ele
-        list[0].setVisited(true);
+        int vertice = vertex.getId();
+        list[vertice].setVisited(true);
         
-        while (true) {
+        Vertex nextVertex;
+                
+        for (int i = 0; i < vertex.lengthEdge(); i++){
             
+            //Identifica qual o vertice ligado ao vertice atual
+            nextVertex =  list[vertice].getVertex().getEdge(i).getVertex();
+
+            //Caso ele nao tenha sido visitado, visite-o
+            if( !list[nextVertex.getId()].isVisited() )
+                depth(nextVertex);
         }
         
     }

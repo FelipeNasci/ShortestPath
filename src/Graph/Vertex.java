@@ -37,8 +37,11 @@ public class Vertex {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public Edge getEdge(int i){
+        return listEdge.get(i);
     }
-
+    
+    public int lengthEdge(){
+        return listEdge.size();
+    }
 }

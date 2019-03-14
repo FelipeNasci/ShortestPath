@@ -31,6 +31,7 @@ public class Use {
         graph.addEdge(um, dois, 20);
 
         search.search(graph);
+        //graph.showVertices();
         
     }
 
