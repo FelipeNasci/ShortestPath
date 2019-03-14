@@ -1,6 +1,8 @@
 
 import Graph.Graph;
 import Graph.Vertex;
+import Search.Search;
+import Search.DepthSearch;
 
 
 public class Use {
@@ -8,6 +10,7 @@ public class Use {
     public static void main(String args[]) throws InterruptedException {
         
         Graph graph = new Graph();
+        Search search = new DepthSearch();
         
         Vertex zero = new Vertex(0);
         Vertex um = new Vertex(1);
@@ -27,7 +30,7 @@ public class Use {
         graph.addEdge(um, tres, 70);
         graph.addEdge(um, dois, 20);
 
-        graph.showVertices();
+        search.search(graph);
         
     }
 
