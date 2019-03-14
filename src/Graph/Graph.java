@@ -48,7 +48,7 @@ public class Graph {
         for (int i = 0; i < vertex.size(); i++) {
             System.err.println(getVertex(i).getId());
             getVertex(i).showVertices();
-            Thread.sleep(100);
+            Thread.sleep(1000);
         }
     }
 }
