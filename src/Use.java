@@ -29,6 +29,8 @@ public class Use {
         graph.addEdge(zero, tres, 150);
         graph.addEdge(um, tres, 70);
         graph.addEdge(um, dois, 20);
+        graph.addEdge(zero, quatro, 90);
+                graph.addEdge(zero, quatro, 90);
 
         search.search(graph);
         //graph.showVertices();
