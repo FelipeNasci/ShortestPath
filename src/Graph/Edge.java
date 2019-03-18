@@ -1,14 +1,18 @@
 package Graph;
 
 public class Edge {
-    private int value;  //Peso da aresta
-    private Vertex vertex;
 
-    public Edge(Vertex vertex, int value){
-        this.vertex = vertex;
+    private int id;
+    private int value;  //Peso da aresta
+    private final Vertex backVertex;
+    private final Vertex nextVertex;
+
+    public Edge(Vertex backVertex, Vertex nextVertex, int value) {
+        this.backVertex = backVertex;   //anterior
+        this.nextVertex = nextVertex;   //proximo
         this.value = value;
     }
-    
+
     public int getValue() {
         return value;
     }
@@ -17,13 +21,16 @@ public class Edge {
         this.value = value;
     }
 
-    public Vertex getVertex() {
-        return vertex;
+    public  Vertex getBackVertex() {
+        if(backVertex != null)
+            return backVertex;
+        return null;
     }
 
-    public void setVertex(Vertex vertex) {
-        this.vertex = vertex;
+    public Vertex getNextVertex() {
+        if(nextVertex != null)
+            return nextVertex;
+        return null;
     }
-    
-    
+ 
 }
