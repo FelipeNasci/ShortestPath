@@ -2,7 +2,7 @@
 import Graph.*;
 import Search.Search;
 import Search.DepthSearch;
-import ShortPathAlgorithm.Kruskal;
+import ShortPathAlgorithm.*;
 import ShortPathAlgorithm.ShortPath;
 
 public class Use {

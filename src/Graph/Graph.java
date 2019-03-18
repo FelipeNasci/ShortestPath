@@ -1,7 +1,6 @@
 package Graph;
 
 import java.util.LinkedList;
-import java.util.logging.Logger;
 
 public class Graph {
 
@@ -50,7 +49,7 @@ public class Graph {
     public void showVertices() {
         try{
             for (int i = 0; i < getLength(); i++) {
-                System.err.println(getVertex(i).getId());
+                System.err.println(getVertex(i).getLabel());
                 getVertex(i).showVertices();
                 Thread.sleep(2000);
             }
@@ -84,6 +83,7 @@ public class Graph {
 
             //Adiciona os vertices na matriz de adjacencia
             addMatrix(v1.getId(), v2.getId(), value);
+            
         }catch(Exception e){System.out.println("Problemas em addEdge(Vertex Vertex Value)");}
     }
    
@@ -99,9 +99,9 @@ public class Graph {
     public Edge getEdge(int id) {
 
        try{
-            if (edge.get(id) != null && edge.size() > 0)
-                return edge.get(id);
-
+            if (edge.size() > 0)
+                if(edge.get(id) != null)
+                    return edge.get(id);
             
        }catch(Exception err){
            System.err.println("Problemas em getEdge()");
@@ -156,8 +156,12 @@ public class Graph {
     }
     
     public void showMatrix(){
+        
+        if(matrix == null)
+            return;
+        
         for (int i = 0; i < matrix.length; i++){
-            for (int j = 0; j < matrix[i].length; j++)
+            for (int j = i; j < matrix[i].length; j++)
                 System.out.print(matrix[i][j] + "\t");
             System.out.println();
         }

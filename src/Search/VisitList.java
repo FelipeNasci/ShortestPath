@@ -7,12 +7,19 @@ public class VisitList {
 
     private Vertex vertex;
     private boolean visited;
-    
-    public VisitList(Vertex vertex, boolean visited){
+
+    private String label;
+
+    public VisitList(Vertex vertex, boolean visited) {
         this.vertex = vertex;
         this.visited = visited;
     }
 
+    public VisitList(Vertex vertex, String label){
+        this.vertex = vertex;
+        this.label = label;
+    }
+    
     public Vertex getVertex() {
         return vertex;
     }
@@ -28,5 +35,16 @@ public class VisitList {
     public void setVisited(boolean visited) {
         this.visited = visited;
     }
-    
+
+    public int getId() {
+        return vertex.getId();
+    }
+
+    public String getLabel() {
+        return label;
+    }
+
+    public void setLabel(String label) {
+        this.label = label;
+    }
 }
