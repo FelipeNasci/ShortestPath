@@ -4,5 +4,5 @@ package ShortPathAlgorithm;
 import Graph.Graph;
 
 public interface ShortPath {
-    public void run(Graph graph);
+    public Graph MST (Graph graph);
 }

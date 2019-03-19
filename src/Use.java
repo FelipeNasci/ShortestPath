@@ -17,6 +17,9 @@ public class Use {
     public static void testKruskal(){
         
         Graph graph = new Graph();          //Grafo vazio
+        
+        ShortPath minimalPath;
+        Graph tree;
         Search search = new DepthSearch();  //Tipo de busca
 
         //Instanciando vertices
@@ -64,8 +67,10 @@ public class Use {
 
         //graph.showMatrix();
         
-        ShortPath s = new Kruskal();
-        s.run(graph);
+        minimalPath = new Kruskal();
+        tree = minimalPath.MST(graph);
+        
+        tree.showVertices();
         
  
         

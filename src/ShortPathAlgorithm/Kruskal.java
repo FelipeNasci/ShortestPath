@@ -9,10 +9,9 @@ import java.util.LinkedList;
 
 public class Kruskal implements ShortPath {
 
-    private Graph forest;
-    private LinkedList<Edge> edge;
-
-    private ArrayList<VisitList> visitedList;
+     Graph forest;
+    private final LinkedList<Edge> edge;
+    private final ArrayList<VisitList> visitedList;
 
     public Kruskal() {
         edge = new LinkedList<>();
@@ -21,7 +20,7 @@ public class Kruskal implements ShortPath {
     }
 
     @Override
-    public void run(Graph graph) {
+    public Graph MST (Graph graph) {
 
         getForest(graph);       //Obtem a floresta
         getEdgeGraph(graph);    //obtem a lista de arestas do grafo original
@@ -30,19 +29,25 @@ public class Kruskal implements ShortPath {
 
         while (edge.size() > 0) {
 
-            u = edge.get(0).getBackVertex().getId();   //vertice inicial
-            v = edge.get(0).getNextVertex().getId();   //vertice final
-            value = edge.get(0).getValue();            //valor da aresta
+            u = edge.get(0).getBackVertex().getId();    //vertice inicial
+            v = edge.get(0).getNextVertex().getId();    //vertice final
+            value = edge.get(0).getValue();             //valor da aresta
 
+            //FindSet compara o rotulo do vertice na lista
+            //Se os rotulos forem diferentes, os vertices
+            //serao conectados na floresta
             if( !findSet(u).equals(findSet(v))  ){
-                updateList(u, v);
-                union(u, v, value);
+                updateList(u, v);           //atualiza a lista com os vertices
+                union(u, v, value);         //adiciona os vertices a floresta
             }
 
-            edge.remove(0);
+            edge.remove(0);                 //remove a aresta da lista
         }
         
-        sumEdge(forest);
+        sumEdge(forest);                    //Soma o peso das arestas
+        
+    return forest;
+        
     }
 
     //A ideia eh utilizar a lista para evitar ciclo
@@ -103,6 +108,7 @@ public class Kruskal implements ShortPath {
         forest.addEdge(u, v, value);
     }
     //Exibe a lista de visitados
+    
     private void showList() {
         for (int i = 0; i < visitedList.size(); i++) {
             System.err.print(visitedList.get(i).getId() + "\t");
