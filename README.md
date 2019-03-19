@@ -7,5 +7,5 @@ Algoritmos para resolução do problema do caminho mínimo em grafos
 ### [Algoritmo de Kruskal](https://github.com/FelipeNasci/ShortestPath/blob/master/src/ShortPathAlgorithm/Kruskal.java)
 
 
-### [Algoritmo de Prim]()
+### [Algoritmo de Prim](https://github.com/FelipeNasci/ShortestPath/blob/master/src/ShortPathAlgorithm/Prim.java)
 
