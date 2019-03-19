@@ -132,7 +132,7 @@ public class Kruskal implements ShortPath {
         for (int i = 0; i < graph.getLengthEdge(); i++) {
             count += graph.getEdge(i).getValue();
         }
-        System.out.println(count);
+        System.out.println("A soma dos pesos das arestas eh: " + count);
     }
 
 }
