@@ -9,7 +9,7 @@ import java.util.LinkedList;
 
 public class Kruskal implements ShortPath {
 
-     Graph forest;
+    Graph forest;
     private final LinkedList<Edge> edge;
     private final ArrayList<VisitList> visitedList;
 
@@ -20,7 +20,7 @@ public class Kruskal implements ShortPath {
     }
 
     @Override
-    public Graph MST (Graph graph) {
+    public Graph MST(Graph graph) {
 
         getForest(graph);       //Obtem a floresta
         getEdgeGraph(graph);    //obtem a lista de arestas do grafo original
@@ -36,18 +36,18 @@ public class Kruskal implements ShortPath {
             //FindSet compara o rotulo do vertice na lista
             //Se os rotulos forem diferentes, os vertices
             //serao conectados na floresta
-            if( !findSet(u).equals(findSet(v))  ){
+            if (!findSet(u).equals(findSet(v))) {
                 updateList(u, v);           //atualiza a lista com os vertices
                 union(u, v, value);         //adiciona os vertices a floresta
             }
 
             edge.remove(0);                 //remove a aresta da lista
         }
-        
+
         sumEdge(forest);                    //Soma o peso das arestas
-        
-    return forest;
-        
+
+        return forest;
+
     }
 
     //A ideia eh utilizar a lista para evitar ciclo
@@ -100,15 +100,15 @@ public class Kruskal implements ShortPath {
         }
     }
 
-    private String findSet(int u){
+    private String findSet(int u) {
         return visitedList.get(u).getLabel();
     }
-    
-    private void union(int u, int v, int value){
+
+    private void union(int u, int v, int value) {
         forest.addEdge(u, v, value);
     }
     //Exibe a lista de visitados
-    
+
     private void showList() {
         for (int i = 0; i < visitedList.size(); i++) {
             System.err.print(visitedList.get(i).getId() + "\t");

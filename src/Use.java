@@ -9,8 +9,8 @@ public class Use {
 
     public static void main(String args[]) throws InterruptedException {
 
-        //testKruskal();
-        //testPrim();
+        testKruskal();
+        testPrim();
         testDijkstra();
     }
 
@@ -69,7 +69,7 @@ public class Use {
         minimalPath = new Kruskal();
         tree = minimalPath.MST(graph);
 
-        tree.showVertices();
+        //tree.showVertices();
 
     }
 
@@ -135,9 +135,7 @@ public class Use {
 
         Graph graph = new DirectedGraph();          //Grafo vazio
 
-        ShortPath minimalPath;
-        Graph tree;
-        Search search = new DepthSearch();  //Tipo de busca
+        ShortPath SP = new Dijkstra();
 
         //Instanciando vertices
         Vertex A = new Vertex(0, "A");
@@ -157,32 +155,25 @@ public class Use {
         graph.addVertex(D);
         graph.addVertex(E);
         graph.addVertex(F);
-        graph.addVertex(G);
-        graph.addVertex(H);
-        graph.addVertex(I);
 
         //adicionando as arestas ao grafo
         //dois vertices e um peso
-        graph.addEdge(A, B, 4);
-        graph.addEdge(A, H, 8);
+        graph.addEdge(A, B, 10);
+        graph.addEdge(A, C, 5);
 
-        graph.addEdge(B, C, 8);
-        graph.addEdge(B, H, 11);
+        graph.addEdge(B, D, 1);
 
-        graph.addEdge(C, D, 7);
-        graph.addEdge(C, I, 2);
+        graph.addEdge(C, D, 8);
+        graph.addEdge(C, B, 3);
         graph.addEdge(C, F, 4);
 
-        graph.addEdge(D, E, 9);
-        graph.addEdge(D, F, 14);
+        graph.addEdge(D, E, 4);
+        graph.addEdge(D, F, 4);
+        
+        graph.addEdge(F, E, 6);
 
-        graph.addEdge(E, F, 10);
-        graph.addEdge(F, G, 2);
-        graph.addEdge(G, H, 1);
-        graph.addEdge(G, I, 6);
-        graph.addEdge(H, I, 7);
+        SP.MST(graph);
 
-        graph.showVertices();
     }
 
     public static void normalTest() {

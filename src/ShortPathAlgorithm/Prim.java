@@ -3,21 +3,15 @@ package ShortPathAlgorithm;
 import Graph.Edge;
 import Graph.Graph;
 import Graph.Vertex;
-import Search.VisitList;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
-public class Prim implements ShortPath {
-
-    Graph forest;
-
-    private final LinkedList<Edge> listEdge;
-    private final ArrayList<VisitList> visitedList;
+public class Prim extends Operations implements ShortPath {
 
     public Prim() {
-        listEdge = new LinkedList<>();
-        forest = new Graph();
-        visitedList = new ArrayList<>();
+        this.priorityListEdge = new LinkedList<>();
+        this.forest = new Graph();
+        this.visitedList = new ArrayList<>();
     }
 
     @Override
@@ -25,18 +19,18 @@ public class Prim implements ShortPath {
 
         getForest(graph);       //Obtem a floresta
 
-        //adicionar na lista todas as arestas do vertice inicial
-        
-        //faz a pesquisa com o vetice inicial
-        //envia o vertice da floresta
+        //Escolhe um vertice arbitrario do grafo original
+        //pesquisa de todos os outros vertices a quem ele se liga
+        //Adiciona essas ligacoes em uma lista de arestas
         search(graph, forest.getVertex(0));
 
-        while (listEdge.size() > 0){
+        while (priorityListEdge.size() > 0){
             
-            Vertex vInitial = listEdge.get(0).getBackVertex();
-            Vertex vFinal = listEdge.get(0).getNextVertex();
-            int value = listEdge.get(0).getValue();
+            Vertex vInitial = priorityListEdge.get(0).getBackVertex();
+            Vertex vFinal = priorityListEdge.get(0).getNextVertex();
+            int value = priorityListEdge.get(0).getValue();
             
+            //Verifica se os vertices foram marcados
             if (!findSet( vInitial.getId() ).equals(findSet( vFinal.getId() ))) {
 
                 //Atualiza lista para evitar ciclo
@@ -46,7 +40,7 @@ public class Prim implements ShortPath {
                 union(vInitial, vFinal, value);
             }
 
-            listEdge.remove(0);
+            priorityListEdge.remove(0);
             
             search(graph, vFinal);
         }
@@ -60,19 +54,6 @@ public class Prim implements ShortPath {
         //Envia o grafo original
         //Envia o id do vertice recem descoberto da floresta
         addEdge(graph, vertex.getId());
-    }
-
-    //A ideia eh utilizar a lista para evitar ciclo
-    private void updateList(int v1, int v2) {
-
-        String label = visitedList.get(v1).getLabel();
-
-        for (int i = 0; i < visitedList.size(); i++) {
-            if (visitedList.get(i).getLabel().equals(label)) {
-                visitedList.get(i).setLabel(visitedList.get(v2).getLabel());
-            }
-        }
-
     }
 
     //Adiciona aresta na lista de prioridade
@@ -101,8 +82,8 @@ public class Prim implements ShortPath {
 
             i = 0;
             //Insere a aresta ordenando por peso            
-            while (i < listEdge.size()) {
-                if (listEdge.get(i).getValue() > value) {
+            while (i < priorityListEdge.size()) {
+                if (priorityListEdge.get(i).getValue() > value) {
                     break;
                 }
                 i++;
@@ -110,81 +91,9 @@ public class Prim implements ShortPath {
 
             
             if (!findSet( v1.getId() ).equals(findSet( v2.getId() )))
-                listEdge.add(i, new Edge(v1, v2, value));
+                priorityListEdge.add(i, new Edge(v1, v2, value));
         }
 
-    }
-
-    //Obtem todas as arestas do grafo
-    private void getEdgeGraph(Graph graph) {
-
-        for (int i = 0; i < graph.getLengthEdge(); i++) {
-
-            int id = graph.getEdge(i).getBackVertex().getId();
-            String label = graph.getEdge(i).getBackVertex().getLabel();
-            Vertex v1 = new Vertex(id, label);
-
-            id = graph.getEdge(i).getNextVertex().getId();
-            label = graph.getEdge(i).getNextVertex().getLabel();
-            Vertex v2 = new Vertex(id, label);
-
-            int value = graph.getEdge(i).getValue();
-
-            listEdge.add(new Edge(v1, v2, value));
-        }
-    }
-
-    //Obtem uma floresta
-    private void getForest(Graph graph) {
-        int id;
-        String label;
-
-        for (int i = 0; i < graph.getLength(); i++) {
-
-            id = graph.getVertex(i).getId();
-            label = graph.getVertex(i).getLabel();
-
-            Vertex vertex = new Vertex(id, label);
-
-            //A floresta contem vertices diferentes do grafo original
-            forest.addVertex(vertex);
-            visitedList.add(new VisitList(vertex, label));
-        }
-    }
-
-    private String findSet(int u) {
-        return visitedList.get(u).getLabel();
-    }
-
-    private void union(Vertex u, Vertex v, int value) {
-        forest.addEdge(u, v, value);
-    }
-    //Exibe a lista de visitados
-
-    private void showList() {
-        for (int i = 0; i < visitedList.size(); i++) {
-            System.err.print(visitedList.get(i).getId() + "\t");
-            System.err.println(visitedList.get(i).getLabel());
-        }
-    }
-
-    private void showConections() {
-        for (int i = 0; i < listEdge.size(); i++) {
-
-            System.out.print(listEdge.get(i).getBackVertex().getLabel() + " <- ");
-            System.out.print(listEdge.get(i).getValue());
-            System.out.println(" -> " + listEdge.get(i).getNextVertex().getLabel());
-        }
-    }
-
-    //Retorna a soma dos pesos de todas as arestas da arvore geradora
-    public void sumEdge(Graph graph) {
-
-        int count = 0;
-        for (int i = 0; i < graph.getLengthEdge(); i++) {
-            count += graph.getEdge(i).getValue();
-        }
-        System.out.println("A soma dos pesos das arestas eh: " + count);
     }
 
 }

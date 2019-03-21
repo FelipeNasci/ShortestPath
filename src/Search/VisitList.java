@@ -7,7 +7,6 @@ public class VisitList {
 
     private Vertex vertex;
     private boolean visited;
-
     private String label;
 
     public VisitList(Vertex vertex, boolean visited) {
