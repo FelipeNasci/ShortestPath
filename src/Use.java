@@ -1,4 +1,4 @@
-
+ 
 import Graph.*;
 import Search.Search;
 import Search.DepthSearch;
@@ -9,8 +9,8 @@ public class Use {
 
     public static void main(String args[]) throws InterruptedException {
 
-        testKruskal();
-        testPrim();
+        //  testKruskal();
+        //  testPrim();
         testDijkstra();
     }
 
@@ -172,6 +172,7 @@ public class Use {
         
         graph.addEdge(F, E, 6);
 
+ //       graph.showMatrix();
         SP.MST(graph);
 
     }
