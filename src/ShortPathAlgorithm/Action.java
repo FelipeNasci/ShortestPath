@@ -18,12 +18,12 @@ public class Action {
 
     protected Graph forest;
     protected ArrayList<VisitList> visited;
-    
-    public Action(){
+
+    public Action() {
         forest = new Graph();
         visited = new ArrayList();
     }
-    
+
     //Obtem uma floresta - Vertices do grafo original
     protected void getForest(Graph graph) {
         int id;
@@ -42,7 +42,7 @@ public class Action {
         }
     }
 
-        //Retorna o rotudo de um vertice (auxilia a verificacao para evitar ciclo)
+    //Retorna o rotudo de um vertice (auxilia a verificacao para evitar ciclo)
     protected String findSet(int vertex) {
         return visited.get(vertex).getLabel();
     }
@@ -65,15 +65,15 @@ public class Action {
 
     }
 
-        //Exibe a lista de visitados
+    //Exibe a lista de visitados
     protected void showList() {
         for (int i = 0; i < visited.size(); i++) {
             System.err.print(visited.get(i).getId() + "\t");
             System.err.println(visited.get(i).getLabel());
         }
     }
-    
-        //Retorna a soma dos pesos de todas as arestas da arvore geradora
+
+    //Retorna a soma dos pesos de todas as arestas da arvore geradora
     public int sumEdge(Graph graph) {
 
         int count = 0;
@@ -84,6 +84,5 @@ public class Action {
         System.out.println("A soma dos pesos das arestas eh: " + count);
         return count;
     }
-
 
 }

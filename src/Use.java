@@ -9,8 +9,11 @@ public class Use {
 
     public static void main(String args[]) throws InterruptedException {
 
-        //  testKruskal();
-        //  testPrim();
+        System.err.println("Kruskal:"); 
+        testKruskal();
+        System.err.println("Prim:");
+        testPrim();
+        System.err.println("Dijkstra:");
         testDijkstra();
     }
 

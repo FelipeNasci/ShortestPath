@@ -7,16 +7,14 @@ import Search.VisitList;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
-public class Kruskal implements ShortPath {
-
-    Graph forest;
+public class Kruskal extends Action implements ShortPath {
+    
     private final LinkedList<Edge> edge;
-    private final ArrayList<VisitList> visitedList;
 
     public Kruskal() {
         edge = new LinkedList<>();
         forest = new Graph();
-        visitedList = new ArrayList<>();
+        visited = new ArrayList<>();
     }
 
     @Override
@@ -25,19 +23,20 @@ public class Kruskal implements ShortPath {
         getForest(graph);       //Obtem a floresta
         getEdgeGraph(graph);    //obtem a lista de arestas do grafo original
 
-        int u, v, value;
+        Vertex u, v;
+        int value;
 
         while (edge.size() > 0) {
 
-            u = edge.get(0).getBackVertex().getId();    //vertice inicial
-            v = edge.get(0).getNextVertex().getId();    //vertice final
+            u = edge.get(0).getBackVertex();    //vertice inicial
+            v = edge.get(0).getNextVertex();    //vertice final
             value = edge.get(0).getValue();             //valor da aresta
 
             //FindSet compara o rotulo do vertice na lista
             //Se os rotulos forem diferentes, os vertices
             //serao conectados na floresta
-            if (!findSet(u).equals(findSet(v))) {
-                updateList(u, v);           //atualiza a lista com os vertices
+            if (!findSet(u.getId()).equals(findSet(v.getId()))) {
+                updateList(u.getId(), v.getId());           //atualiza a lista com os vertices
                 union(u, v, value);         //adiciona os vertices a floresta
             }
 
@@ -50,20 +49,10 @@ public class Kruskal implements ShortPath {
 
     }
 
-    //A ideia eh utilizar a lista para evitar ciclo
-    private void updateList(int v1, int v2) {
+    
 
-        String label = visitedList.get(v1).getLabel();
-
-        for (int i = 0; i < visitedList.size(); i++) {
-            if (visitedList.get(i).getLabel().equals(label)) {
-                visitedList.get(i).setLabel(visitedList.get(v2).getLabel());
-            }
-        }
-
-    }
-
-    //Obtem todas as arestas do grafo
+    //Obtem/copia todas as arestas do grafo original
+    //estas arestas ja estao ordenadas
     private void getEdgeGraph(Graph graph) {
 
         for (int i = 0; i < graph.getLengthEdge(); i++) {
@@ -80,59 +69,6 @@ public class Kruskal implements ShortPath {
 
             edge.add(new Edge(v1, v2, value));
         }
-    }
-
-    //Obtem uma floresta
-    private void getForest(Graph graph) {
-        int id;
-        String label;
-
-        for (int i = 0; i < graph.getLength(); i++) {
-
-            id = graph.getVertex(i).getId();
-            label = graph.getVertex(i).getLabel();
-
-            Vertex vertex = new Vertex(id, label);
-
-            //A floresta contem vertices diferentes do grafo original
-            forest.addVertex(vertex);
-            visitedList.add(new VisitList(vertex, label));
-        }
-    }
-
-    private String findSet(int u) {
-        return visitedList.get(u).getLabel();
-    }
-
-    private void union(int u, int v, int value) {
-        forest.addEdge(u, v, value);
-    }
-    //Exibe a lista de visitados
-
-    private void showList() {
-        for (int i = 0; i < visitedList.size(); i++) {
-            System.err.print(visitedList.get(i).getId() + "\t");
-            System.err.println(visitedList.get(i).getLabel());
-        }
-    }
-
-    private void showConections() {
-        for (int i = 0; i < edge.size(); i++) {
-
-            System.out.print(edge.get(i).getBackVertex().getLabel() + " <- ");
-            System.out.print(edge.get(i).getValue());
-            System.out.println(" -> " + edge.get(i).getNextVertex().getLabel());
-        }
-    }
-
-    //Retorna a soma dos pesos de todas as arestas da arvore geradora
-    public void sumEdge(Graph graph) {
-
-        int count = 0;
-        for (int i = 0; i < graph.getLengthEdge(); i++) {
-            count += graph.getEdge(i).getValue();
-        }
-        System.out.println("A soma dos pesos das arestas eh: " + count);
     }
 
 }

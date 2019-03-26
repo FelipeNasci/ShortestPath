@@ -9,3 +9,6 @@ Algoritmos para resolução do problema do caminho mínimo em grafos
 
 ### [Algoritmo de Prim](https://github.com/FelipeNasci/ShortestPath/blob/master/src/ShortPathAlgorithm/Prim.java)
 
+
+### [Algoritmo de Dijkstra](https://github.com/FelipeNasci/ShortestPath/blob/master/src/ShortPathAlgorithm/Dijkstra.java)
+

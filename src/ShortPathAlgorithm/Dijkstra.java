@@ -14,7 +14,6 @@ public class Dijkstra extends Action implements ShortPath {
     private final ArrayList<Integer> valueEdge;     //Lista com valores das arestas
 
     private final int inf = 100000;
-    private int aux;                                //numero de vertices do grafo
 
     public Dijkstra() {
         super();
@@ -29,29 +28,28 @@ public class Dijkstra extends Action implements ShortPath {
         try {
 
             int vertice;
-            Vertex v2;
+            Vertex vInitial, vFinal;
 
             getForest(graph);
             inicialize(graph);
-            aux = forest.getLength();
 
-            Vertex v1 = graph.getVertex(0);
+            vInitial = graph.getVertex(0);
 
-            distance.set(v1.getId(), 0);    //Distancia de v1 para v1 eh igual a 0
-            father.set(v1.getId(), 0);      //O primeiro vertice nao tem pai, ou ele mesmo
+            distance.set(vInitial.getId(), 0);    //Distancia de v1 para v1 eh igual a 0
+            father.set(vInitial.getId(), 0);      //O primeiro vertice nao tem pai, ou ele mesmo
 
-            while (aux > 0) {
+            for (int i = forest.getLength(); i > 0; i--) {
 
                 //por meio desta variavel podemos 
                 //identificar o vertice e seu pai
                 vertice = shorDistance();       //aresta que possui menor distancia 
 
-                v2 = graph.getVertex(vertice);
-                relax(v2);
-                visited.get(v2.getId()).setVisited(true);   //Marca o vertice como visitado
+                vFinal = graph.getVertex(vertice);
+                relax(vFinal);
+                visited.get(vFinal.getId()).setVisited(true);   //Marca o vertice como visitado
 
-                Vertex vInitial = forest.getVertex(father.get(vertice));
-                Vertex vFinal = forest.getVertex(vertice);
+                vInitial = forest.getVertex(father.get(vertice));
+                vFinal = forest.getVertex(vertice);
                 int value = valueEdge.get(vertice);
 
                 //Se os vertices nao formam ciclo, conecte-os
@@ -63,7 +61,7 @@ public class Dijkstra extends Action implements ShortPath {
                     //Adiciona uma aresta na floresta
                     union(vInitial, vFinal, value);
                 }
-                aux--;
+                
             }
 
         } catch (Exception e) {
@@ -71,6 +69,8 @@ public class Dijkstra extends Action implements ShortPath {
         }
 
         //showTable();
+        //forest.showVertices();
+        sumEdge(forest);
 
         return forest;
     }
