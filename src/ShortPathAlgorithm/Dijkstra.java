@@ -28,7 +28,7 @@ public class Dijkstra extends Action implements ShortPath {
         try {
 
             int vertice;
-            Vertex vInitial, vFinal;
+            Vertex vInitial, vFinal, vAux;
 
             getForest(graph);
             inicialize(graph);
@@ -36,21 +36,21 @@ public class Dijkstra extends Action implements ShortPath {
             vInitial = graph.getVertex(0);
 
             distance.set(vInitial.getId(), 0);    //Distancia de v1 para v1 eh igual a 0
-            father.set(vInitial.getId(), 0);      //O primeiro vertice nao tem pai, ou ele mesmo
+            father.set(vInitial.getId(), vInitial.getId());      //O primeiro vertice nao tem pai, ou ele mesmo
 
             for (int i = forest.getLength(); i > 0; i--) {
 
                 //por meio desta variavel podemos 
                 //identificar o vertice e seu pai
-                vertice = shorDistance();       //aresta que possui menor distancia 
+                vertice = shortDistance();       //aresta que possui menor distancia 
 
-                vFinal = graph.getVertex(vertice);
-                relax(vFinal);
-                visited.get(vFinal.getId()).setVisited(true);   //Marca o vertice como visitado
+                vAux = graph.getVertex(vertice);
+                relax(vAux);
+                visited.get(vAux.getId()).setVisited(true);   //Marca o vertice como visitado
 
                 vInitial = forest.getVertex(father.get(vertice));
                 vFinal = forest.getVertex(vertice);
-                int value = valueEdge.get(vertice);
+                int value = distance.get(vertice);
 
                 //Se os vertices nao formam ciclo, conecte-os
                 if (!findSet(vInitial.getId()).equals(findSet(vFinal.getId()))) {
@@ -118,7 +118,7 @@ public class Dijkstra extends Action implements ShortPath {
     }
 
     //retorna a posicao do vertice que possui menor distancia
-    private int shorDistance() {
+    private int shortDistance() {
         try {
 
             int lower = inf;
