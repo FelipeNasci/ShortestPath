@@ -26,11 +26,11 @@ public class DepthSearch implements Search {
 
     private void depth( Vertex vertex){
         
-        System.err.println("Estou no Vertice " + vertex.getLabel());
+        System.err.println("Estou no Vertice " + vertex.getLabel);
                 
         //Marca o primeiro vertice da lista como visitado
         //A busca sera iniciada por ele
-        int vertice = vertex.getId();
+        int vertice = vertex.id;
         list[vertice].setVisited(true);
         
         Vertex nextVertex;
@@ -41,7 +41,7 @@ public class DepthSearch implements Search {
             nextVertex =  list[vertice].getVertex().getEdge(i).getNextVertex();
 
             //Caso ele nao tenha sido visitado, visite-o
-            if( !list[nextVertex.getId()].isVisited() )
+            if( !list[nextVertex.id].isVisited() )
                 depth(nextVertex);
         }
         
@@ -56,7 +56,7 @@ public class DepthSearch implements Search {
     
     private void showVisited(VisitList[] list){
         for (int i = 0; i < list.length; i++){
-            System.out.println("Vertice " + list[i].getVertex().getLabel());
+            System.out.println("Vertice " + list[i].getVertex().id);
         
             if (list[i].isVisited())
                 System.err.println("Foi Visitado");

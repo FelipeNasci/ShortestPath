@@ -31,8 +31,8 @@ public class Action {
 
         for (int i = 0; i < graph.getLength(); i++) {
 
-            id = graph.getVertex(i).getId();
-            label = graph.getVertex(i).getLabel();
+            id = graph.getVertex(i).id;
+            label = graph.getVertex(i).getLabel;
 
             Vertex vertex = new Vertex(id, label);
 
@@ -74,11 +74,11 @@ public class Action {
     }
 
     //Retorna a soma dos pesos de todas as arestas da arvore geradora
-    public int sumEdge(Graph graph) {
+    public static int sumEdge(Graph graph) {
 
         int count = 0;
         for (int i = 0; i < graph.getLengthEdge(); i++) {
-            count += graph.getEdge(i).getValue();
+            count += graph.getEdge(i).value;
         }
 
         System.out.println("A soma dos pesos das arestas eh: " + count);

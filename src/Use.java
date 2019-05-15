@@ -1,4 +1,4 @@
- 
+
 import Graph.*;
 import Search.Search;
 import Search.DepthSearch;
@@ -9,10 +9,12 @@ public class Use {
 
     public static void main(String args[]) throws InterruptedException {
 
-        System.err.println("Kruskal:"); 
+        System.err.println("Kruskal:");
         testKruskal();
+        
         System.err.println("Prim:");
         testPrim();
+        
         System.err.println("Dijkstra:");
         testDijkstra();
     }
@@ -72,6 +74,7 @@ public class Use {
         minimalPath = new Kruskal();
         tree = minimalPath.MST(graph);
 
+        Action.sumEdge(tree);
         //tree.showVertices();
 
     }
@@ -131,13 +134,14 @@ public class Use {
         minimalPath = new Prim();
         tree = minimalPath.MST(graph);
 
+        Action.sumEdge(tree);
         //tree.showVertices();
     }
 
     public static void testDijkstra() {
 
         Graph graph = new DirectedGraph();          //Grafo vazio
-
+        Graph path;
         ShortPath SP = new Dijkstra();
 
         //Instanciando vertices
@@ -147,9 +151,6 @@ public class Use {
         Vertex D = new Vertex(3, "D");
         Vertex E = new Vertex(4, "E");
         Vertex F = new Vertex(5, "F");
-        Vertex G = new Vertex(6, "G");
-        Vertex H = new Vertex(7, "H");
-        Vertex I = new Vertex(8, "I");
 
         //adicionando os vertices ao grafo
         graph.addVertex(A);
@@ -172,12 +173,12 @@ public class Use {
 
         graph.addEdge(D, E, 4);
         graph.addEdge(D, F, 4);
-        
+
         graph.addEdge(F, E, 6);
 
- //       graph.showMatrix();
-        SP.MST(graph);
-
+        path = SP.MST(graph);
+        
+        Action.sumEdge(path);
     }
 
     public static void normalTest() {
@@ -195,8 +196,8 @@ public class Use {
         graph.addEdge(A, B, 500);
 
         //System.out.println(A.lengthEdge());
-        System.err.println(A.getEdge(0).getValue());
-        System.err.println(B.getEdge(0).getValue());
+        System.err.println(A.getEdge(0).value);
+        System.err.println(B.getEdge(0).value);
 
         System.out.println(graph.hasEdge(A, C));
     }

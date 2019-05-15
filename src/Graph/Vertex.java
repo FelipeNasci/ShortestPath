@@ -4,9 +4,9 @@ import java.util.LinkedList;
 
 public class Vertex {
 
-    private int id;
-    private LinkedList<Edge> listEdge;
-    private String getLabel;
+    public int id;
+    public LinkedList<Edge> listEdge;
+    public String getLabel;
 
     public Vertex(int id) {
         this.id = id;
@@ -26,7 +26,7 @@ public class Vertex {
         int i = 0;
 
         while (i < listEdge.size()) {
-            if (listEdge.get(i).getValue() > value) {
+            if (listEdge.get(i).value > value) {
                 break;
             }
             i++;
@@ -40,15 +40,13 @@ public class Vertex {
     protected void showVertices() {
 
         for (int i = 0; i < listEdge.size(); i++) {
-            System.out.println(getLabel() + " <-- "
-                    + listEdge.get(i).getValue()
-                    + " --> " + listEdge.get(i).getNextVertex().getLabel());
+            System.out.println(id + " <-- "
+                    + listEdge.get(i).value
+                    + " --> " + listEdge.get(i).getNextVertex().id);
         }
     }
 
-    public int getId() {
-        return id;
-    }
+
 
     public Edge getEdge(int i) {
 
@@ -57,14 +55,6 @@ public class Vertex {
         }
 
         return null;
-    }
-
-    public String getLabel() {
-        return getLabel;
-    }
-
-    public void setLabel(String label) {
-        this.getLabel = label;
     }
 
     public int lengthEdge() {

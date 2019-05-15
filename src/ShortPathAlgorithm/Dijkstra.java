@@ -1,152 +1,123 @@
 
 import Graph.DirectedGraph;
-import Graph.Edge;
 import Graph.Graph;
 import Graph.Vertex;
-import ShortPathAlgorithm.Action;
 import ShortPathAlgorithm.ShortPath;
-import java.util.ArrayList;
 
-public class Dijkstra extends Action implements ShortPath {
+public class Dijkstra implements ShortPath {
 
-    private final ArrayList<Integer> distance;      //Lista de distancia entre vertices
-    private final ArrayList<Integer> father;        //Lista com o pai de cada vertice
-    private final ArrayList<Integer> valueEdge;     //Lista com valores das arestas
-
-    private final int inf = 100000;
-
-    public Dijkstra() {
-        super();
-        this.forest = new DirectedGraph();
-        this.distance = new ArrayList();
-        this.father = new ArrayList();
-        this.valueEdge = new ArrayList<>();
-    }
+    private final int nulo = -1, inf = Integer.MAX_VALUE;
+    private int[] distancia, pai, S;
+    private boolean[] Q;
+    int size_Q, fim_S;
+    Graph graph;
 
     @Override
     public Graph MST(Graph graph) {
-        try {
 
-            int vertice;
-            Vertex vInitial, vFinal;
+        this.graph = graph;
+        this.distancia = new int[graph.matrix.length];
+        this.pai = new int[graph.matrix.length];
+        this.Q = new boolean[graph.matrix.length];
+        this.S = new int[graph.matrix.length];
 
-            getForest(graph);
-            inicialize(graph);
+        inicializeSingleSource(0);
 
-            vInitial = graph.getVertex(0);
+        Vertex u, v;
+        int peso;
 
-            distance.set(vInitial.getId(), 0);    //Distancia de v1 para v1 eh igual a 0
-            father.set(vInitial.getId(), 0);      //O primeiro vertice nao tem pai, ou ele mesmo
+        while (size_Q > 0) {
 
-            for (int i = forest.getLength(); i > 0; i--) {
+            //Extrai o vertice com menor peso e insere-o em uma lista de solucao
+            u = extractMin(Q, distancia);
+            
+            S[fim_S] = u.id;    //Lista de solucao
+            fim_S++;            //posicao de insercao do proximo elemento
 
-                //por meio desta variavel podemos 
-                //identificar o vertice e seu pai
-                vertice = shorDistance();       //aresta que possui menor distancia 
+            //Visita todos os adjacentes ao vertice u e relaxa as arestas
+            for (int i = 0; i < u.lengthEdge(); i++) {
+                v = u.getEdge(i).nextVertex;
+                peso = u.getEdge(i).value;
 
-                vFinal = graph.getVertex(vertice);
-                relax(vFinal);
-                visited.get(vFinal.getId()).setVisited(true);   //Marca o vertice como visitado
+                relax(u.id, v.id, peso);
 
-                vInitial = forest.getVertex(father.get(vertice));
-                vFinal = forest.getVertex(vertice);
-                int value = valueEdge.get(vertice);
+            }
+        }
 
-                //Se os vertices nao formam ciclo, conecte-os
-                if (!findSet(vInitial.getId()).equals(findSet(vFinal.getId()))) {
+        return path(S,  distancia);
+    }
 
-                    //Atualiza lista para evitar ciclo
-                    updateList(vInitial.getId(), vFinal.getId());
+    private void inicializeSingleSource(int raiz) {
 
-                    //Adiciona uma aresta na floresta
-                    union(vInitial, vFinal, value);
-                }
-                
+        for (int vertice = 0; vertice < distancia.length; vertice++) {
+            this.distancia[vertice] = inf;     //Distancia do vertice ao pai
+            this.pai[vertice] = nulo;          //indica o vertice filho
+            this.Q[vertice] = true;
+        }
+
+        size_Q = Q.length;
+        fim_S = 0;
+
+        distancia[raiz] = 0;           //fonte = raiz
+        pai[raiz] = 0;
+
+    }
+
+    private void relax(int vertice_u, int vertice_v, int peso) {
+
+        if (distancia[vertice_v] > distancia[vertice_u] + peso) {
+            distancia[vertice_v] = distancia[vertice_u] + peso;
+            pai[vertice_v] = vertice_u;
+        }
+
+    }
+
+    private Vertex extractMin(boolean[] Q, int[] distancia) {
+
+        int menor = Integer.MAX_VALUE, vertice;
+        Vertex vertex = null;
+
+        /**
+         * *
+         * Q é uma lista temporaria que contem todos os vertices O vetor
+         * distancia contem a distancia de um vertice para outro
+         *
+         */
+        for (vertice = 0; vertice < distancia.length; vertice++) {
+
+            if (distancia[vertice] < menor && Q[vertice] == true) {
+                menor = distancia[vertice];
+                vertex = graph.getVertex(vertice);
             }
 
-        } catch (Exception e) {
-            System.err.println("Problema na MST Djkistra");
         }
 
-        //showTable();
-        //forest.showVertices();
-        sumEdge(forest);
+        Q[vertex.id] = false;       //Remove o vertice da lista
+        size_Q--;                   //Diminui o tamanho da lista
 
-        return forest;
+        return vertex;
     }
 
-    private void inicialize(Graph graph) {
-        for (int i = 0; i < graph.getLength(); i++) {
-            distance.add(inf);
-            father.add(-1);
-            visited.get(i).setVisited(false);
-            valueEdge.add(0);
+    private Graph path(int[] S, int[] distancia) {
+
+        Vertex[] vertex = new Vertex[distancia.length];
+        Graph path = new DirectedGraph();
+
+        //inicializa os vertices e adicionando-os no grafo
+        for (int vertice = 0; vertice < distancia.length; vertice++) {
+            vertex[vertice] = new Vertex(vertice);
+            path.addVertex(vertex[vertice]);
         }
-    }
 
-    private void relaxEdge(Edge edge) {
+        for (int vertice = 1; vertice < S.length; vertice++) {
 
-        try {
-            Vertex v1 = edge.getBackVertex();
-            Vertex v2 = edge.getNextVertex();
-            int value = edge.getValue();
+            Vertex A = vertex[ S[vertice - 1] ];
+            Vertex B = vertex[ S[vertice] ];
 
-            int dist1 = distance.get(v1.getId());
-            int dist2 = distance.get(v2.getId());
-
-            if (dist1 + value < dist2) {
-                //distancia de v1 para v2 = v1 + peso_aresta
-                distance.set(v2.getId(), dist1 + value);
-                //pai de v2 eh v1
-                father.set(v2.getId(), v1.getId());
-                //Adiciona o valor da aresta original
-                valueEdge.set(v2.getId(), value);
-            }
-        } catch (Exception e) {
-            System.out.println("erro em relaxEdge()");
-        }
-    }
-
-    private void relax(Vertex vertex) {
-        try {
-            for (int i = 0; i < vertex.lengthEdge(); i++) {
-                relaxEdge(vertex.getEdge(i));
-            }
-        } catch (Exception e) {
-            System.err.println("erro em relax()");
-        }
-    }
-
-    //retorna a posicao do vertice que possui menor distancia
-    private int shorDistance() {
-        try {
-
-            int lower = inf;
-            int pos = 0;
-
-            for (int i = 0; i < distance.size(); i++) {
-
-                if (!visited.get(i).isVisited() && distance.get(i) < lower) {
-
-                    lower = distance.get(i);
-                    pos = i;
-
-                }
-            }
-            return pos;
-        } catch (Exception e) {
-            System.err.println("erro em shortDistance");
-        }
-        return 0;
-    }
-
-    private void showTable() {
-        System.out.println("\t Pai \t Distancia");
-        for (int i = 0; i < distance.size(); i++) {
-            System.err.print(i + "\t");
-            System.err.print(father.get(i) + " \t ");
-            System.err.println(distance.get(i));
+            path.addEdge(A, B, distancia[B.id]);
 
         }
+
+        return path;
     }
 }

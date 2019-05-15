@@ -1,84 +1,114 @@
 package ShortPathAlgorithm;
 
-import Graph.Edge;
 import Graph.Graph;
 import Graph.Vertex;
-import java.util.LinkedList;
 
-public class Prim extends Action implements ShortPath {
+public class Prim implements ShortPath {
 
-    private final LinkedList<Edge> priorityListEdge;    //lista prioritaria de aresta
+    int[][] matrix;
+    Graph graph;
 
-    public Prim() {
-        this.priorityListEdge = new LinkedList<>();
-        this.forest = new Graph();
-    }
+    //Lista dos vertices disponiveis
+    boolean[] Q;
+    int size_Q;
 
     @Override
     public Graph MST(Graph graph) {
 
-        getForest(graph);       //Obtem a florestaz
+        this.matrix = graph.matrix.clone();
+        this.graph = graph;
 
-        //Escolhe um vertice arbitrario do grafo original
-        //pesquisa de todos os outros vertices a quem ele se liga
-        //Adiciona essas ligacoes em uma lista de arestas
-        search(graph.getVertex(0));
+        int nulo = -1, inf = Integer.MAX_VALUE, raiz = 0;
 
-        while (priorityListEdge.size() > 0) {
+        int[] distancia = new int[matrix.length];
+        int[] pai = new int[matrix.length];
 
-            Vertex vInitial = priorityListEdge.get(0).getBackVertex();
-            Vertex vFinal = priorityListEdge.get(0).getNextVertex();
-            int value = priorityListEdge.get(0).getValue();
+        //Lista temporaria contendo todos os vertices
+        Q = new boolean[matrix.length];
+        size_Q = Q.length;
 
-            //Verifica se os vertices foram marcados
-            if (!findSet(vInitial.getId()).equals(findSet(vFinal.getId()))) {
+        for (int vertice = 0; vertice < distancia.length; vertice++) {
+            distancia[vertice] = inf;     //Distancia do vertice ao pai
+            pai[vertice] = nulo;          //indica o vertice filho
+            Q[vertice] = true;            //Diz se o vertice está na lista
+        }
 
-                //Atualiza lista para evitar ciclo
-                updateList(vInitial.getId(), vFinal.getId());
+        distancia[raiz] = 0;
+        pai[raiz] = 0;
 
-                //Adiciona uma aresta na floresta
-                union(vInitial, vFinal, value);
+        Vertex u, v;
+        int peso, vertice;
+
+        while (size_Q > 0) {
+
+            u = extractMin(Q, distancia);
+
+            for (int i = 0; i < u.lengthEdge(); i++) {
+                v = u.getEdge(i).nextVertex;
+                peso = u.getEdge(i).value;
+                vertice = v.id;
+
+                if (Q[vertice] == true && peso < distancia[vertice]) {
+                    pai[vertice] = u.id;
+                    distancia[vertice] = peso;
+                }
+
             }
 
-            priorityListEdge.remove(0);
-
-            search(vFinal);
         }
 
-        sumEdge(forest);
+        //sumEdge(forest(pai, distancia));
+        return forest(pai, distancia);
+
+    }
+
+    private Vertex extractMin(boolean[] Q, int[] distancia) {
+
+        int menor = Integer.MAX_VALUE, vertice;
+        Vertex vertex = null;
+
+        /**
+         * *
+         * Q é uma lista temporaria que contem todos os vertices O vetor
+         * distancia contem a distancia de um vertice para outro
+         *
+         */
+        for (vertice = 0; vertice < distancia.length; vertice++) {
+
+            if (distancia[vertice] < menor && Q[vertice] == true) {
+                menor = distancia[vertice];
+                vertex = graph.getVertex(vertice);
+            }
+
+        }
+
+        Q[vertex.id] = false;       //Remove o vertice da lista
+        size_Q--;                   //Diminui o tamanho da lista
+
+        return vertex;
+    }
+
+    private Graph forest(int[] pai, int[] distancia) {
+
+        Vertex[] vertex = new Vertex[pai.length];
+        Graph forest = new Graph();
+        
+        //inicializa os vertices e adicionando-os no grafo
+        for (int vertice = 0; vertice < pai.length; vertice++) {
+            vertex[vertice] = new Vertex(vertice);
+            forest.addVertex(vertex[vertice]);
+        }
+
+        for (int vertice = 0; vertice < pai.length; vertice++) {
+            
+            Vertex A = vertex[vertice];
+            Vertex B = vertex[pai[vertice]];
+            
+            //Se o vertice A for diferente de B adicione-os no grafo
+            if(A.id != B.id)
+                forest.addEdge(A, B, distancia[vertice]);
+        }
+
         return forest;
-
     }
-
-    //percorre todas as arestas ligadas ao vertice
-    public void search(Vertex vertex) {
-
-        Edge edge;
-
-        for (int i = 0; i < vertex.lengthEdge(); i++) {
-            edge = vertex.getEdge(i);
-            addEdge(edge);
-        }
-    }
-
-    //Adiciona aresta na lista de prioridade
-    public void addEdge(Edge edge) {
-
-        int i = 0;
-        
-        //verifica se v1 e v2 ja foram marcados
-        if (findSet(edge.getBackVertex().getId()).equals(findSet(edge.getNextVertex().getId()))) 
-            return;
-        
-        //Insere a aresta ordenando por peso            
-        while (i < priorityListEdge.size()) {
-            if (priorityListEdge.get(i).getValue() > edge.getValue()) 
-                break;
-            i++;
-        }
-
-        priorityListEdge.add(i, edge);
-
-    }
-
 }

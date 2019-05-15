@@ -36,7 +36,7 @@ public class VisitList {
     }
 
     public int getId() {
-        return vertex.getId();
+        return vertex.id;
     }
 
     public String getLabel() {

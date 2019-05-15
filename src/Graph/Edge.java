@@ -2,10 +2,10 @@ package Graph;
 
 public class Edge {
 
-    private int id;
-    private int value;  //Peso da aresta
-    private final Vertex backVertex;
-    private final Vertex nextVertex;
+    public int id;
+    public int value;  //Peso da aresta
+    public final Vertex backVertex;
+    public final Vertex nextVertex;
 
     public Edge(Vertex backVertex, Vertex nextVertex, int value) {
         this.backVertex = backVertex;   //anterior
@@ -13,13 +13,7 @@ public class Edge {
         this.value = value;
     }
 
-    public int getValue() {
-        return value;
-    }
 
-    public void setValue(int value) {
-        this.value = value;
-    }
 
     public  Vertex getBackVertex() {
         if(backVertex != null)

@@ -1,5 +1,6 @@
 package Graph;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 public class DirectedGraph extends Graph {
@@ -7,7 +8,7 @@ public class DirectedGraph extends Graph {
     public DirectedGraph() {
         super();
         this.edge = new LinkedList<Edge>();
-        this.vertex = new LinkedList<Vertex>();
+        this.vertex = new ArrayList<Vertex>();
         this.length = 0;
 
     }
@@ -22,7 +23,7 @@ public class DirectedGraph extends Graph {
             //Insere a areta ordenando por peso
             int i = 0;
             while (i < edge.size()) {
-                if (edge.get(i).getValue() > value)
+                if (edge.get(i).value > value)
                     break;
                 i++;
             }
@@ -32,7 +33,7 @@ public class DirectedGraph extends Graph {
             if (matrix == null) activeMatrix();
             
             //Adiciona os vertices na matriz de adjacencia
-            addMatrix(v1.getId(), v2.getId(), value);
+            addMatrix(v1.id, v2.id, value);
 
         } catch (Exception e) {
             System.out.println("Problemas em addEdge(Vertex Vertex Value)");

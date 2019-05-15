@@ -1,17 +1,18 @@
 package Graph;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 public class Graph {
 
-    protected int length;
-    protected int[][] matrix;
+    public int length;
+    public int[][] matrix;
 
-    protected LinkedList<Vertex> vertex;
-    protected LinkedList<Edge> edge;
+    public ArrayList<Vertex> vertex;
+    public LinkedList<Edge> edge;
 
     public Graph() {
-        vertex = new LinkedList<>();
+        vertex = new ArrayList<>();
         edge = new LinkedList<>();
 
         this.length = 0;
@@ -35,7 +36,7 @@ public class Graph {
     public Vertex getVertex(int id) {
 
         for (int i = 0; i < getLength(); i++) {
-            if (vertex.get(i).getId() == id) {
+            if (vertex.get(i).id == id) {
                 return vertex.get(i);
             }
         }
@@ -47,7 +48,7 @@ public class Graph {
     public void showVertices() {
         try {
             for (int i = 0; i < getLength(); i++) {
-                System.err.println(getVertex(i).getLabel());
+                //System.err.println(getVertex(i).id);
                 getVertex(i).showVertices();
                 Thread.sleep(2000);
             }
@@ -69,7 +70,7 @@ public class Graph {
             //Insere a areta ordenando por peso
             int i = 0;
             while (i < edge.size()) {
-                if (edge.get(i).getValue() > value) {
+                if (edge.get(i).value > value) {
                     break;
                 }
                 i++;
@@ -82,7 +83,7 @@ public class Graph {
             }
 
             //Adiciona os vertices na matriz de adjacencia
-            addMatrix(v1.getId(), v2.getId(), value);
+            addMatrix(v1.id, v2.id, value);
 
         } catch (Exception e) {
             System.out.println("Problemas em addEdge(Vertex Vertex Value)");
@@ -123,12 +124,12 @@ public class Graph {
 
         if (this.edge.size() > 0) {
 
-            Vertex first = getVertex(v1.getId());
+            Vertex first = getVertex(v1.id);
             Vertex last;
 
             for (int i = 0; i < first.lengthEdge(); i++) {
                 last = first.getEdge(i).getNextVertex();    //last = conexao com primeiro vertice
-                if (v2.getId() == last.getId()) //verifica se o id dos vertice sao iguais
+                if (v2.id == last.id) //verifica se o id dos vertice sao iguais
                 {
                     return true;
                 }
