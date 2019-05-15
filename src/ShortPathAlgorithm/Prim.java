@@ -34,7 +34,7 @@ public class Prim implements ShortPath {
         }
 
         distancia[raiz] = 0;
-        pai[raiz] = 0;
+        pai[raiz] = raiz;
 
         Vertex u, v;
         int peso, vertice;
@@ -42,6 +42,15 @@ public class Prim implements ShortPath {
         while (size_Q > 0) {
 
             u = extractMin(Q, distancia);
+
+            /*************************************************
+            * Verifica cada aresta adjacente a 'u',
+            * caso seja menor do que o valor que
+            * está na lista de distância, atualize as listas. 
+            * 
+            * O objeto Vertex guarda suas arestas com seus
+            * respectivos pesos.
+            **************************************************/
 
             for (int i = 0; i < u.lengthEdge(); i++) {
                 v = u.getEdge(i).nextVertex;
@@ -57,7 +66,6 @@ public class Prim implements ShortPath {
 
         }
 
-        //sumEdge(forest(pai, distancia));
         return forest(pai, distancia);
 
     }
