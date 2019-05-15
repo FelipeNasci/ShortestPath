@@ -15,18 +15,28 @@ public class Dijkstra implements ShortPath {
     @Override
     public Graph MST(Graph graph) {
 
+<<<<<<< HEAD
         this.graph = graph;
         this.distancia = new int[graph.matrix.length];
         this.pai = new int[graph.matrix.length];
         this.Q = new boolean[graph.matrix.length];
         this.S = new int[graph.matrix.length];
+=======
+            int vertice;
+            Vertex vInitial, vFinal, vAux;
+>>>>>>> 92a802dfa61e96c308002f540800e0508b42ede2
 
         inicializeSingleSource(0);
 
         Vertex u, v;
         int peso;
 
+<<<<<<< HEAD
         while (size_Q > 0) {
+=======
+            distance.set(vInitial.getId(), 0);    //Distancia de v1 para v1 eh igual a 0
+            father.set(vInitial.getId(), vInitial.getId());      //O primeiro vertice nao tem pai, ou ele mesmo
+>>>>>>> 92a802dfa61e96c308002f540800e0508b42ede2
 
             //Extrai o vertice com menor peso e insere-o em uma lista de solucao
             u = extractMin(Q, distancia);
@@ -34,6 +44,7 @@ public class Dijkstra implements ShortPath {
             S[fim_S] = u.id;    //Lista de solucao
             fim_S++;            //posicao de insercao do proximo elemento
 
+<<<<<<< HEAD
             //Visita todos os adjacentes ao vertice u e relaxa as arestas
             for (int i = 0; i < u.lengthEdge(); i++) {
                 v = u.getEdge(i).nextVertex;
@@ -43,6 +54,22 @@ public class Dijkstra implements ShortPath {
 
             }
         }
+=======
+                //por meio desta variavel podemos 
+                //identificar o vertice e seu pai
+                vertice = shortDistance();       //aresta que possui menor distancia 
+
+                vAux = graph.getVertex(vertice);
+                relax(vAux);
+                visited.get(vAux.getId()).setVisited(true);   //Marca o vertice como visitado
+
+                vInitial = forest.getVertex(father.get(vertice));
+                vFinal = forest.getVertex(vertice);
+                int value = distance.get(vertice);
+
+                //Se os vertices nao formam ciclo, conecte-os
+                if (!findSet(vInitial.getId()).equals(findSet(vFinal.getId()))) {
+>>>>>>> 92a802dfa61e96c308002f540800e0508b42ede2
 
         return path(S,  distancia);
     }
@@ -91,6 +118,14 @@ public class Dijkstra implements ShortPath {
             }
 
         }
+<<<<<<< HEAD
+=======
+    }
+
+    //retorna a posicao do vertice que possui menor distancia
+    private int shortDistance() {
+        try {
+>>>>>>> 92a802dfa61e96c308002f540800e0508b42ede2
 
         Q[vertex.id] = false;       //Remove o vertice da lista
         size_Q--;                   //Diminui o tamanho da lista
