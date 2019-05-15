@@ -13,3 +13,5 @@ Algoritmos para resolução do problema do caminho mínimo em grafos
 ### [Algoritmo de Dijkstra](https://github.com/FelipeNasci/ShortestPath/blob/master/src/ShortPathAlgorithm/Dijkstra.java)
 
 ![Algoritmo_Kruskal](https://github.com/FelipeNasci/ShortestPath/blob/master/images/Algoritmo%20de%20Kruskal.gif)
+
+![Algoritmo_Dijkstra](https://github.com/FelipeNasci/ShortestPath/blob/master/images/Algoritmo%20de%20Dijkstra.gif?raw=true)
